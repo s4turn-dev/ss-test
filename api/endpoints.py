@@ -8,10 +8,11 @@ would need an app=Flask() object of its own. It would also take two different pr
 for the frontend framework  and for the backend service to function, in opposition to
 a single Python process in the current configuration.
 """
-from flask import request as request
+from flask import request
 import json
 
 from . import app
+
 
 API_PREFIX = "/api"
 
