@@ -6,6 +6,7 @@ from flask import request
 
 from flask_login import current_user
 from flask_login import login_required
+from flask_login import logout_user
 from flask_login import login_user
 from hashlib import md5
 
@@ -18,7 +19,7 @@ from models.user import User#, Requisites
 @app.get('/')
 @login_required
 def requisitesPage():
-    return render_template('profile.html', user=current_user)
+    return render_template('requisites.html', user=current_user)
 
 @app.post('/')
 @login_required
@@ -48,7 +49,7 @@ def user_loader(uid: int):
 def unathorized():
     return redirect(url_for('loginPage'))
 
-def hash_pwd(pwd: str) -> str: return md5(bytes(pwd, 'utf-8')).hexdigest().decode('utf-8')
+def hash_pwd(pwd: str) -> str: return md5(bytes(pwd, 'utf-8')).hexdigest()
 
 
 @app.get('/login')
@@ -62,13 +63,20 @@ def loginPage():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(login=form.username.data, password=hash_pwd(form.password.data)).first()
+        user = User.query.filter_by(username=form.username.data, password=hash_pwd(form.password.data)).first()
         if user:
             login_user(user)
             return redirect(url_for('requisitesPage'))
         else:
             flash('Wrong credentials')
             return redirect(url_for('loginPage'))
+    return redirect(url_for('loginPage'))
+
+@app.get('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('loginPage'))
 
 
 @app.get('/signup')
@@ -81,6 +89,8 @@ def signupPage():
 @app.post('/signup')
 def signup():
     form = SignupForm()
+    if form.is_submitted():
+        print('123')
     if form.validate_on_submit():
         username = form.username.data
         password = hash_pwd(form.password.data) 
@@ -89,4 +99,4 @@ def signup():
         db.session.commit()
         login_user(new_user)
         return redirect(url_for('requisitesPage'))
-    return redirect(url_for('signupPage'))
+    return render_template('signup.html', form=form)
