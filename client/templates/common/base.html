@@ -2,10 +2,15 @@
 <html>
     <head>
         <title>{% block title %}{% endblock %} | ss-test</title>
+        <link type='css/stylesheet' href="{{ url_for('static', filename='css/common.css' }}">
+        {% block styles %}{% endblock %}
     </head>
+
     <body>
         <div class='container'>
             {% block body %}{% endblock %}
         </div>
     </body>
+
+    {% block scripts %}{% endblock %}
 </html>
