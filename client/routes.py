@@ -53,9 +53,10 @@ def hash_pwd(pwd: str) -> str: return md5(bytes(pwd, 'utf-8')).hexdigest().decod
 
 @app.get('/login')
 def loginPage():
+    form = LoginForm()
     if current_user.is_authenticated:
         return redirect(url_for('requisitesPage'))
-    return render_template('login.html')
+    return render_template('login.html', form=form)
 
 @app.post('/login')
 def login():
@@ -72,9 +73,10 @@ def login():
 
 @app.get('/signup')
 def signupPage():
+    form = SignupForm()
     if current_user.is_authenticated:
         return redirect(url_for('requisitesPage'))
-    return render_template('signup.html')
+    return render_template('signup.html', form = SignupForm())
 
 @app.post('/signup')
 def signup():

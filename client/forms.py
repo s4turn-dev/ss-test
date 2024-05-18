@@ -19,5 +19,5 @@ class SignupForm(FlaskForm):
     submit = SubmitField('Sign Up')
 
     def validate_username(self, username):
-        if User.query.filter_by(login=username.data).first():
+        if User.query.filter_by(username=username.data).first():
             raise ValidationError('This username is already in use')
