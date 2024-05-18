@@ -1,0 +1,65 @@
+{% extends 'common/base.html' %}
+
+{% block title %}
+    {% if form.data.bank %}
+        Edit {{ form.bank.data }} Requisites
+    {% else %}
+        Add New Requisites
+    {% endif%}
+{% endblock %}
+
+{% block body %}
+    <form action="" method="POST">
+        {{ form.hidden_tag() }}
+
+        <p>
+            {{ form.bank.label }}
+            {{ form.bank() }}
+            {% for err in form.bank.errors %}
+                <span style="color: red;">{{ err }}</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.bic.label }}
+            {{ form.bic() }}
+            {% for err in form.bic.errors %}
+                <span style="color: red;">{{ err }}</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.checking_account.label }}
+            {{ form.checking_account() }}
+            {% for err in form.checking_account.errors %}
+                <span style="color: red;">{{ err }}</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.correspondent_account.label }}
+            {{ form.correspondent_account() }}
+            {% for err in form.correspondent_account.errors %}
+                <span style="color: red;">{{ err }}</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.swift.label }}
+            {{ form.swift() }}
+            {% for err in form.swift.errors %}
+                <span style="color: red;">{{ err }}</span>
+            {% endfor %}
+        </p>
+
+        <p>
+            {{ form.iban.label }}
+            {{ form.iban() }}
+            {% for err in form.iban.errors %}
+                <span style="color: red;">{{ err }}</span>
+            {% endfor %}
+        </p>
+
+        {{ form.submit() }}
+    </form>
+{% endblock %}

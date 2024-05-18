@@ -1,0 +1,50 @@
+h3 {
+    grid-column: span 2;
+}
+
+a.button {
+    padding: 1px 6px;
+    border: 1px outset buttonborder;
+    border-radius: 3px;
+    color: buttontext;
+    background-color: buttonface;
+    text-decoration: none;
+    height: 25px;
+    width: 60px;
+    margin: 1rem 0;
+    text-align: center;
+    align-content: center;
+}
+
+#requisites-table {
+    width: 25em;
+    text-align: center;
+}
+
+.requisites_block {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    grid-template-rows: 10% 45% 45%;
+    margin: 30px 15px 0 15px;
+    
+    border: 3px solid transparent;
+    border-radius: 15px;
+}
+
+.requisites_block:hover {
+    border-color: yellow;
+    cursor: grab;
+}
+
+.requisites_block.active, .requisites_bloc.active:hover {
+    border-color: red;
+    cursor: auto;
+}
+
+.requisites_block table {
+    grid-row: span 2;
+}
+
+.requisites_block button {
+    margin: 1rem;
+}
