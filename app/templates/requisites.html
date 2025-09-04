@@ -45,7 +45,7 @@
             document.getElementById('requisites-table').children[id-1].classList.add('active');
 
             var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open('GET', '{{ endpoint }}/activate/' + id, false);
+            xmlHttp.open('GET', '/activate/' + id, false);
             xmlHttp.send();
         }
     </script>
