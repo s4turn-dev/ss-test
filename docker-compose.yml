@@ -3,9 +3,9 @@ services:
     depends_on:
       - db
     build: .
-    entrypoint: ./docker-entrypoint.sh
     environment:
       - DB_DOMAIN=db
+    entrypoint: ./wait-for-it.sh db:${DB_PORT} --strict -- ./docker-entrypoint.sh
 
   db:
     image: postgres:13
