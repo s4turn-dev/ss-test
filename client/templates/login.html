@@ -11,21 +11,16 @@
     {% endif %}
     {% endwith %}
 
-    <form method="POST" novalidate>
+    <form action="" method="POST">
+        {{ form.hidden_tag() }}
         <p>
             {{ form.username.label }}<br>
             {{ form.username() }}
-            {% for err in form.username.errors %}
-                <span style="color: red;">{{ err }}</span><br>
-            {% endfor %}
         </p>
 
         <p>
             {{ form.password.label }}<br>
             {{ form.password() }}
-            {% for err in form.username.errors %}
-                <span style="color: red;">{{ err }}</span><br>
-            {% endfor %}
         </p>
 
         <p>{{ form.submit() }}</p>

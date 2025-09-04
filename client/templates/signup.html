@@ -1,6 +1,6 @@
 {% extends 'common/base.html' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Sign Up{% endblock %}
 
 {% block body %}
     {% with messages = get_flashed_messages() %}
@@ -11,7 +11,9 @@
     {% endif %}
     {% endwith %}
 
-    <form method="POST" novalidate>
+    <form action="" method="POST">
+        {{ form.hidden_tag() }}
+
         <p>
             {{ form.username.label }}<br>
             {{ form.username() }}
@@ -23,7 +25,7 @@
         <p>
             {{ form.password.label }}<br>
             {{ form.password() }}
-            {% for err in form.username.errors %}
+            {% for err in form.password.errors %}
                 <span style="color: red;">{{ err }}</span><br>
             {% endfor %}
         </p>
@@ -31,7 +33,7 @@
         <p>
             {{ form.confirm_password.label }}<br>
             {{ form.confirm_password() }}
-            {% for err in form.username.errors %}
+            {% for err in form.confirm_password.errors %}
                 <span style="color: red;">{{ err }}</span><br>
             {% endfor %}
         </p>

@@ -4,4 +4,7 @@
 
 {% block body %}
     <h1>Welcome back, {{ user.username }}</h1>
+    <form action="/logout" method="GET">
+        <input type="submit" value="Log out">
+    </form>
 {% endblock %}
