@@ -12,14 +12,16 @@ from hashlib import md5
 
 from . import app, login_manager, db
 from .forms import LoginForm, SignupForm
-from models.user import User#, Requisites
+from models.user import User
+from models.requisites import Requisites
 
 
 # --- General stuff --- 
 @app.get('/')
 @login_required
 def requisitesPage():
-    return render_template('requisites.html', user=current_user)
+    requisites = Requisites.query.filter_by(user_uid=current_user.uid)
+    return render_template('requisites.html', user=current_user, requisites=requisites)
 
 @app.post('/')
 @login_required

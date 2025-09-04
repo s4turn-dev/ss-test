@@ -5,8 +5,9 @@ from . import db
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     uid = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(16), index=True)
-    password = db.Column(db.String(32), index=True)
+    username = db.Column(db.String(16), index=True, nullable=False)
+    password = db.Column(db.String(32), nullable=False)
+    requisites = db.relationship('Requisites', backref='user', lazy=True)
 
     def get_id(self):
         return self.uid
