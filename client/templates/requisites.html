@@ -7,4 +7,31 @@
     <form action="/logout" method="GET">
         <input type="submit" value="Log out">
     </form>
+    
+    <div id='requisites_table'>
+        {% for req in requisites %}
+            <p {% if req.is_active %}class='active'{% endif %}>
+                <h5>{{ req.bank }}</h5>
+                <table>
+                    <tr>
+                        <th>БИК | SWIFT</th>
+                        <th>Р/С</th>
+                        <th>К/С</th>
+                    </tr>
+                    <tr>
+                        <td>{{ req.bic }}</td>
+                        <td>{{ req.checking_account }}</td>
+                        <td>{{ req.correspondent_account }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ req.swift }}</td>
+                    </tr>
+                </table>
+            </p>
+            <button>Edit</button>
+            <button>Delete</button>
+        {% endfor %}
+
+        <button>Add new</button>
+    </div>
 {% endblock %}
