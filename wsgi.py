@@ -1,1 +1,1 @@
-from client import app
+from app import app

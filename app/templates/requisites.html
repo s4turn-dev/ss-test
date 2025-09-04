@@ -39,14 +39,14 @@
 
     <script lang='javascript'>
         function activateRequisites(id) {
-            var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open('GET', '{{ endpoint }}/activate/' + id, false);
-            xmlHttp.send();
-
             var old = document.getElementsByClassName('active')[0];
             if (old)
                 old.classList.remove('active');
             document.getElementById('requisites-table').children[id-1].classList.add('active');
+
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open('GET', '{{ endpoint }}/activate/' + id, false);
+            xmlHttp.send();
         }
     </script>
 {% endblock %}
