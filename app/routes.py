@@ -106,8 +106,8 @@ def loginPage():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data, password=hash_pwd(form.password.data)).first()
-        if user:
+        user = User.query.filter_by(username=form.username.data).first()
+        if user and user.password == hash_pwd(form.password.data):
             login_user(user)
             return redirect(url_for('requisitesPage'))
         else:
