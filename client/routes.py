@@ -2,7 +2,7 @@ from flask import render_template
 from flask import redirect
 from flask import url_for
 from flask import flash
-from flask import request
+from flask import abort
 
 from flask_login import current_user
 from flask_login import login_required
@@ -11,7 +11,7 @@ from flask_login import login_user
 from hashlib import md5
 
 from . import app, login_manager, db
-from .forms import LoginForm, SignupForm
+from .forms import LoginForm, SignupForm, RequisitesForm
 from models.user import User
 from models.requisites import Requisites
 
@@ -23,23 +23,64 @@ def requisitesPage():
     requisites = Requisites.query.filter_by(user_uid=current_user.uid)
     return render_template('requisites.html', user=current_user, requisites=requisites)
 
-@app.post('/')
-@login_required
-def newRequisite():
-    print('add req')
-    redirect(url_for('requisitesPage'))
 
-@app.post('/edit/<req_id>')
+@app.route('/add', methods=['GET', 'POST'])
 @login_required
-def editRequisite(req_id: int):
-    print(f'edit req {req_id}')
-    redirect(url_for('requisitesPage'))
+def addRequisites():
+    form = RequisitesForm()
+    if form.validate_on_submit():
+        req = Requisites(user_uid=current_user.uid)
+        form.populate_obj(req)
+        db.session.add(req)
+        db.session.commit()
+        return redirect(url_for('requisitesPage'))
+    return render_template('requisites_form.html', form=form)
 
-@app.post('/delete/<req_id>')
+
+@app.route('/edit/<int:req_id>', methods=['GET', 'POST'])
 @login_required
-def deleteRequisite(req_id: int):
-    print(f'delete req {req_id}')
-    redirect(url_for('requisitesPage'))
+def editRequisites(req_id: int):
+    try:
+        req = Requisites.query.filter_by(user_uid=current_user.uid)[req_id-1]
+    except IndexError:
+        abort(404)
+    else:
+        form = RequisitesForm(obj=req)
+        if form.validate_on_submit():
+            form.populate_obj(req)
+            db.session.commit()
+            return redirect(url_for('requisitesPage'))
+        return render_template('requisites_form.html', form=form)
+
+
+@app.get('/delete/<int:req_id>')
+@login_required
+def deleteRequisites(req_id: int):
+    try:
+        req = Requisites.query.filter_by(user_uid=current_user.uid)[req_id-1]
+    except IndexError:
+        abort(404)
+    else:
+        db.session.delete(req)
+        db.session.commit()
+        return redirect(url_for('requisitesPage'))
+
+
+@app.get('/activate/<int:req_id>')
+@login_required
+def activateRequisites(req_id: int):
+    try:
+        req = Requisites.query.filter_by(user_uid=current_user.uid)[req_id-1]
+    except IndexError:
+        return 'NOT FOUND'
+    else:
+        old_active = Requisites.query.filter_by(user_uid=current_user.uid, is_active=True).first()
+        if old_active:
+            old_active.is_active = False
+        req.is_active = True
+        db.session.commit()
+        return 'OK'
+
 
 
 # --- Account management ---

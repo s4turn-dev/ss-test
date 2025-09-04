@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, EqualTo, ValidationError
+from wtforms.validators import DataRequired, EqualTo, ValidationError, Length
 
 from . import db
 from models.user import User
@@ -21,3 +21,14 @@ class SignupForm(FlaskForm):
     def validate_username(self, username):
         if User.query.filter_by(username=username.data).first():
             raise ValidationError('This username is already in use')
+
+
+class RequisitesForm(FlaskForm):
+    bank = StringField('Название банка', validators=[DataRequired(), Length(max=32)])
+    bic = StringField('БИК', validators=[DataRequired(), Length(9, 9)])
+    checking_account = StringField('Расчетный счет', validators=[DataRequired(), Length(max=32)])
+    correspondent_account = StringField('Корреспондентский счет', validators=[DataRequired(), Length(0, 32)])
+    swift = StringField('SWIFT', validators=[DataRequired(), Length(max=32)])
+    iban = StringField('IBAN (Опциональное поле)', validators=[Length(max=32)])
+
+    submit = SubmitField('Готово')

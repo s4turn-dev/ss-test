@@ -1,37 +1,53 @@
 {% extends 'common/base.html' %}
 
 {% block title %}Home{% endblock %}
+{% block styles %}
+    <link rel='stylesheet' href="{{ url_for('static', filename='css/requisites.css') }}">
+{% endblock %}
 
 {% block body %}
     <h1>Welcome back, {{ user.username }}</h1>
-    <form action="/logout" method="GET">
+    <form class='logout_form' action="/logout" method="GET">
         <input type="submit" value="Log out">
     </form>
     
-    <div id='requisites_table'>
+    <div id='requisites-table'>
         {% for req in requisites %}
-            <p {% if req.is_active %}class='active'{% endif %}>
-                <h5>{{ req.bank }}</h5>
+            <div class='requisites_block {% if req.is_active %}active{% endif %}' onclick='activateRequisites({{ loop.index }})'>
+                <h3>{{ req.bank }}</h3>
                 <table>
                     <tr>
-                        <th>БИК | SWIFT</th>
-                        <th>Р/С</th>
-                        <th>К/С</th>
+                        <th>БИК</th>
+                        <td>{{ req.bic }}</td>
                     </tr>
                     <tr>
-                        <td>{{ req.bic }}</td>
+                        <th>Р/С</th>
                         <td>{{ req.checking_account }}</td>
+                    </tr>
+                    <tr>
+                        <th>К/С</th>
                         <td>{{ req.correspondent_account }}</td>
                     </tr>
-                    <tr>
-                        <td>{{ req.swift }}</td>
-                    </tr>
                 </table>
-            </p>
-            <button>Edit</button>
-            <button>Delete</button>
-        {% endfor %}
 
-        <button>Add new</button>
+                <a href='/edit/{{ loop.index }}' class='button'>Edit</a>
+                <a href='/delete/{{ loop.index }}' class='button'>Delete</a>
+            </div>
+        {% endfor %}
     </div>
+    <a href='/add' class='button'>Add</a>
+
+    <script lang='javascript'>
+        function activateRequisites(id) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open('GET', '{{ endpoint }}/activate/' + id, false);
+            xmlHttp.send();
+
+            var old = document.getElementsByClassName('active')[0];
+            if (old)
+                old.classList.remove('active');
+            document.getElementById('requisites-table').children[id-1].classList.add('active');
+        }
+    </script>
 {% endblock %}
+
