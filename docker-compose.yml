@@ -1,0 +1,26 @@
+services:
+  app:
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: flask.Dockerfile
+    entrypoint:
+      ./docker-entrypoint.sh
+    environment:
+      - DB_DOMAIN=db
+    ports:
+      - 5000:5000
+
+  db:
+    image:
+      postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgres/data
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+
+volumes:
+  postgres_data:
