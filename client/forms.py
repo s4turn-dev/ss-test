@@ -3,7 +3,7 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, EqualTo, ValidationError
 
 from . import db
-from models import User
+from models.user import User
 
 
 class LoginForm(FlaskForm):
@@ -15,8 +15,8 @@ class LoginForm(FlaskForm):
 class SignupForm(FlaskForm):
     username = StringField('Login', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired(message="Password can't be empty")])
-    confirm_password = passwordfield('Confirm password', validators=[EqualTo('password', message='Passwords do not match')])
-    submit = submitfield('Sign Up')
+    confirm_password = PasswordField('Confirm password', validators=[EqualTo('password', message='Passwords do not match')])
+    submit = SubmitField('Sign Up')
 
     def validate_username(self, username):
         if User.query.filter_by(login=username.data).first():

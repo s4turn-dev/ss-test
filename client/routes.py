@@ -10,8 +10,8 @@ from flask_login import login_user
 from hashlib import md5
 
 from . import app, login_manager, db
-from app.forms import LoginForm, SignupForm
-from app.models import User#, Requisites
+from .forms import LoginForm, SignupForm
+from models.user import User#, Requisites
 
 
 # --- General stuff --- 
@@ -28,13 +28,13 @@ def newRequisite():
 
 @app.post('/edit/<req_id>')
 @login_required
-def editrequisite(req_id: int):
+def editRequisite(req_id: int):
     print(f'edit req {req_id}')
     redirect(url_for('requisitesPage'))
 
 @app.post('/delete/<req_id>')
 @login_required
-def editrequisite(req_id: int):
+def deleteRequisite(req_id: int):
     print(f'delete req {req_id}')
     redirect(url_for('requisitesPage'))
 
@@ -67,7 +67,7 @@ def login():
             return redirect(url_for('requisitesPage'))
         else:
             flash('Wrong credentials')
-            rturn redirect(url_for('loginPage'))
+            return redirect(url_for('loginPage'))
 
 
 @app.get('/signup')
@@ -76,7 +76,7 @@ def signupPage():
         return redirect(url_for('requisitesPage'))
     return render_template('signup.html')
 
-@app.post('/signup'):
+@app.post('/signup')
 def signup():
     form = SignupForm()
     if form.validate_on_submit():
